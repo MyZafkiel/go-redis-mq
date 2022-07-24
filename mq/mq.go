@@ -15,6 +15,7 @@ type Mq struct {
 	timer  *time.Ticker
 	Rdb    *redis.Client //redis客户端
 	ctx    context.Context
+	fail   FailHandler
 	Client *Client
 }
 
@@ -109,7 +110,7 @@ func (m *Mq) event(handle JobHandler, r string) {
 			}
 		}
 	}(data)
-	if !handle(data.Data) {
+	if !handle(m.Client, data.Data) {
 		data.Attempts++
 		if data.Attempts > m.MaxAttempts {
 			m.Client.fail(data)

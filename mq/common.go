@@ -10,9 +10,9 @@ const (
 	QUEUE_FAILD   = "queue:failed"
 )
 
-type JobHandler func(data interface{}) bool
+type JobHandler func(client *Client, data interface{}) bool
 
-type FailHandler func(data interface{}) bool
+type FailHandler func(client *Client, item JobItem) bool
 
 type Job struct {
 	Queue  string
