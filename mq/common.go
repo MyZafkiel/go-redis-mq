@@ -1,6 +1,7 @@
 package mq
 
 import (
+	"encoding/json"
 	"time"
 )
 
@@ -10,7 +11,9 @@ const (
 	QUEUE_FAILD   = "queue:failed"
 )
 
-type JobHandler func(client *Client, data string) bool
+type DataHandle func(p interface{}) error
+
+type JobHandler func(client *Client, getData DataHandle) bool
 
 type FailHandler func(client *Client, item JobItem) bool
 
@@ -25,11 +28,12 @@ type JobItem struct {
 	Data     string `json:"data"`
 }
 
-func NewJobItem(Queue string, Data string) JobItem {
+func NewJobItem(Queue string, Data interface{}) JobItem {
+	d, _ := json.Marshal(Data)
 	return JobItem{
 		Queue:    QUEUE_WAITING + Queue,
 		Attempts: 0,
-		Data:     Data,
+		Data:     string(d),
 	}
 }
 

@@ -109,7 +109,9 @@ func (m *Mq) event(handle JobHandler, r string) {
 			}
 		}
 	}(data)
-	if !handle(m.Client, data.Data) {
+	if !handle(m.Client, func(p interface{}) error {
+		return json.Unmarshal([]byte(data.Data), &p)
+	}) {
 		data.Attempts++
 		if data.Attempts > m.MaxAttempts {
 			m.Client.fail(data)
