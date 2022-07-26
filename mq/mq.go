@@ -96,7 +96,7 @@ func (m *Mq) event(handle JobHandler, r string) {
 		return
 	}
 	defer func(data JobItem) {
-		if err := recover(); err != nil {
+		if recover() != nil {
 			data.Attempts++
 			if data.Attempts > m.MaxAttempts {
 				if m.Client.fail(data) != nil {
