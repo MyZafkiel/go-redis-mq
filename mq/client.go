@@ -19,7 +19,7 @@ func NewClient(rdb *redis.Client) *Client {
 	}
 }
 
-func (c *Client) Send(queue string, data interface{}, delay time.Duration) error {
+func (c *Client) Send(queue string, data string, delay time.Duration) error {
 	job := NewJobItem(queue, data)
 	if delay < 1 {
 		return c.add(job)

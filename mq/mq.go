@@ -78,7 +78,7 @@ func consumer(mq *Mq) {
 	for {
 		res := mq.Rdb.BRPop(mq.ctx, time.Second*5, Queues...)
 		if res.Err() != nil {
-			return
+			continue
 		}
 		val := res.Val()
 		mq.event(Handle[val[0]], val[1])

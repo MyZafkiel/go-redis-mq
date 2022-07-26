@@ -10,7 +10,7 @@ const (
 	QUEUE_FAILD   = "queue:failed"
 )
 
-type JobHandler func(client *Client, data interface{}) bool
+type JobHandler func(client *Client, data string) bool
 
 type FailHandler func(client *Client, item JobItem) bool
 
@@ -20,12 +20,12 @@ type Job struct {
 }
 
 type JobItem struct {
-	Queue    string      `json:"queue"`    //队列名称
-	Attempts int         `json:"attempts"` //尝试次数
-	Data     interface{} `json:"data"`
+	Queue    string `json:"queue"`    //队列名称
+	Attempts int    `json:"attempts"` //尝试次数
+	Data     string `json:"data"`
 }
 
-func NewJobItem(Queue string, Data interface{}) JobItem {
+func NewJobItem(Queue string, Data string) JobItem {
 	return JobItem{
 		Queue:    QUEUE_WAITING + Queue,
 		Attempts: 0,
