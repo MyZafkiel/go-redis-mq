@@ -22,7 +22,6 @@ type Job struct {
 type JobItem struct {
 	Queue    string      `json:"queue"`    //队列名称
 	Attempts int         `json:"attempts"` //尝试次数
-	Error    string      `json:"error"`
 	Data     interface{} `json:"data"`
 }
 
@@ -30,7 +29,6 @@ func NewJobItem(Queue string, Data interface{}) JobItem {
 	return JobItem{
 		Queue:    QUEUE_WAITING + Queue,
 		Attempts: 0,
-		Error:    "",
 		Data:     Data,
 	}
 }
